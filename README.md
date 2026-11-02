@@ -1,33 +1,61 @@
-# UIP સાથી · UIP Saathi
+const elemLanguage = document.getElementById('language');
+const storageLang = 'uip-saathi-language';
+const storageChecklist = 'uip-saathi-checklist';
 
-A bilingual Gujarati-English responsive web app for health workers learning and referring to India's Universal Immunisation Programme (UIP). It is designed to work in a phone or desktop browser—no Mac, Xcode, app installation, or local build is required.
+function setTextLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-gu][data-en]').forEach((el) => {
+    el.textContent = el.dataset[lang];
+  });
+  if (elemLanguage) elemLanguage.value = lang;
+  localStorage.setItem(storageLang, lang);
+}
 
-## What's included
+function loadChecklist() {
+  const inputs = [...document.querySelectorAll('.check-item input[type="checkbox"]')];
+  const saved = JSON.parse(localStorage.getItem(storageChecklist) || '[]');
+  inputs.forEach((input, idx) => {
+    input.checked = Boolean(saved[idx]);
+  });
+}
 
-- Gujarati and English interface with remembered language preference
-- Official NHM immunization resource, Routine Immunization Manual, and U-WIN links
-- General session-planning checklist saved locally in the browser
-- Short learning question and a three-stage memory aid
-- Mobile-friendly layout and clear clinical-use disclaimer
-- GitHub Actions workflow to publish this static site on GitHub Pages
+function persistChecklist() {
+  const checked = [...document.querySelectorAll('.check-item input[type="checkbox"]')].map((input) => input.checked);
+  localStorage.setItem(storageChecklist, JSON.stringify(checked));
+}
 
-## Publish it on GitHub Pages
+const savedLang = localStorage.getItem(storageLang) || 'gu';
+setTextLanguage(savedLang);
+if (elemLanguage) {
+  elemLanguage.addEventListener('change', (event) => setTextLanguage(event.target.value));
+}
 
-1. Open this repository's **Settings → Pages**.
-2. Under **Build and deployment → Source**, select **GitHub Actions**.
-3. The workflow deploys automatically when changes are pushed to `main`. Follow progress in the **Actions** tab.
-4. After the first successful deployment, open the Pages URL shown in the workflow or repository Pages settings. It will look like `https://solankirajnikant1080-cell.github.io/uip-saathi-ios/`.
+loadChecklist();
+[...document.querySelectorAll('.check-item input[type="checkbox"]')].forEach((input) => {
+  input.addEventListener('change', persistChecklist);
+});
 
-No Xcode, Mac, or Apple Developer account is needed to use the web app. You can bookmark the published URL on a phone.
+document.getElementById('resetChecklist')?.addEventListener('click', () => {
+  [...document.querySelectorAll('.check-item input[type="checkbox"]')].forEach((input) => {
+    input.checked = false;
+  });
+  persistChecklist();
+});
 
-## Official sources
+document.querySelectorAll('.quiz-option').forEach((button) => {
+  button.addEventListener('click', () => {
+    const feedback = document.getElementById('quizFeedback');
+    const lang = localStorage.getItem(storageLang) || 'gu';
+    document.querySelectorAll('.quiz-option').forEach((opt) => opt.classList.remove('correct', 'wrong'));
 
-- NHM immunization guidelines and manuals: https://nhm.gov.in/index1.php?lang=1&level=3&sublinkid=944&lid=378
-- Routine Immunization Manual for Health Workers: https://nccmis.mohfw.gov.in/document/RI_Manual_For_Health_Workers.pdf
-- U-WIN: https://uwin.mohfw.gov.in/home
-
-## Clinical content and privacy
-
-This app is a learning and reference aid, not a clinical protocol. The checklist is a general planning prompt, not a substitute for official procedures. This version intentionally does not reproduce vaccine schedules, dose/route instructions, contraindications, or AEFI management steps; consult current MoHFW/NHM guidance and state/district instructions. Add clinical details only with source citations and review dates.
-
-The checklist and language choice are stored in the user's browser local storage. No patient information, analytics, or user accounts are collected.
+    if (button.dataset.answer === 'correct') {
+      button.classList.add('correct');
+      feedback.textContent = lang === 'gu' ? 'સાચો જવાબ! આ જ ક્રમ યાદ રાખવા માટે સરળ છે.' : 'Correct! This is the simplest order to remember.';
+      feedback.style.color = '#0f6a54';
+    } else {
+      button.classList.add('wrong');
+      feedback.textContent = lang === 'gu' ? 'ફરીથી વિચારજો — પહેલાં, દરમિયાન, પછી.' : 'Think again — before, during, after.';
+      feedback.style.color = '#ac4d3a';
+    }
+  });
+});
