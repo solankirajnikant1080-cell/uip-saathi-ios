@@ -1,25 +1,24 @@
-# UIP Saathi (iOS starter)
+# UIP સાથી · UIP Saathi
 
-A bilingual Gujarati–English SwiftUI starter for health workers using India's Universal Immunisation Programme (UIP). The first screen provides official source links and clearly labels this app as a training/reference aid.
+A bilingual Gujarati-English responsive web app for health workers learning and referring to India's Universal Immunisation Programme (UIP). It is designed to work in a phone or desktop browser—no Mac, Xcode, app installation, or local build is required.
 
-## Open in Xcode
+## What's included
 
-1. On a Mac with Xcode, create a new **iOS App** project named `UIPSaathi` using **SwiftUI** and **Swift**.
-2. Replace the generated app entry file and `ContentView.swift` with the matching files in `UIPSaathi/`.
-3. Set the deployment target to iOS 16 or later, then build and run on a simulator or device.
+- Gujarati and English interface with remembered language preference
+- Official NHM immunization resource, Routine Immunization Manual, and U-WIN links
+- General session-planning checklist saved locally in the browser
+- Short learning question and a three-stage memory aid
+- Mobile-friendly layout and clear clinical-use disclaimer
+- GitHub Actions workflow to publish this static site on GitHub Pages
 
-This repository currently contains the SwiftUI source starter; it does not yet include a generated `.xcodeproj`.
+## Publish it on GitHub Pages
 
-## Current screens
+1. Open this repository's **Settings → Pages**.
+2. Under **Build and deployment → Source**, select **GitHub Actions**.
+3. The workflow deploys automatically when changes are pushed to `main`. Follow progress in the **Actions** tab.
+4. After the first successful deployment, open the Pages URL shown in the workflow or repository Pages settings. It will look like `https://solankirajnikant1080-cell.github.io/uip-saathi-ios/`.
 
-- Gujarati/English language selector
-- Official NHM immunization guidelines, routine immunization manual, and U-WIN links
-- Quick-reference feature placeholders
-- Training/reference disclaimer
-
-## Clinical content and safety
-
-This starter intentionally does **not** encode vaccine dose, route, schedule, contraindication, AEFI-management, or cold-chain instructions. Confirm those details against the latest applicable MoHFW/NHM documents and state/district instructions before adding them. Government guidance can change; include a visible source and review date for any clinical content added later. This app is not a substitute for official protocols, clinical judgment, or local supervision.
+No Xcode, Mac, or Apple Developer account is needed to use the web app. You can bookmark the published URL on a phone.
 
 ## Official sources
 
@@ -27,6 +26,8 @@ This starter intentionally does **not** encode vaccine dose, route, schedule, co
 - Routine Immunization Manual for Health Workers: https://nccmis.mohfw.gov.in/document/RI_Manual_For_Health_Workers.pdf
 - U-WIN: https://uwin.mohfw.gov.in/home
 
-## Privacy
+## Clinical content and privacy
 
-The starter stores no personal, patient, or immunization-record data and has no analytics or network service beyond opening the official links. Do not add identifiable patient information without an approved privacy/security design and appropriate authorization.
+This app is a learning and reference aid, not a clinical protocol. The checklist is a general planning prompt, not a substitute for official procedures. This version intentionally does not reproduce vaccine schedules, dose/route instructions, contraindications, or AEFI management steps; consult current MoHFW/NHM guidance and state/district instructions. Add clinical details only with source citations and review dates.
+
+The checklist and language choice are stored in the user's browser local storage. No patient information, analytics, or user accounts are collected.
